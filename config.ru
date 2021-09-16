@@ -1,3 +1,3 @@
-require_relative "home.rb"
+require "./home.rb"
 
 run Sinatra::Application
