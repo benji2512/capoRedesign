@@ -1,3 +1,3 @@
-require "./app"
+require "./home"
 
-run App
+run Sinatra::Application
