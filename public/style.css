@@ -18,6 +18,49 @@ body {
   color: green;
 }
 
+button {
+  background: var(--accent-color);
+  border-radius: var(--radius);
+  color: white;
+  border: 0;
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: block;
+}
+button:hover {
+  filter: contrast(115%);
+}
+button:active {
+  transform: translateY(0px) scale(0.98);
+  filter: brightness(0.9);
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: none;
+}
+
+.quantity-setter {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.quantity-setter input {
+  border-radius: 0;
+  width: 50px;
+  padding: 0;
+  text-align: center;
+}
+
+.quantity-setter .increment-btn {
+  margin-top: 0;
+  border-radius: 0;
+  border: 1px solid var(--accent-color);
+}
+
 @media (min-width: 768px) {
   .navbar .navbar-nav {
     position: absolute;

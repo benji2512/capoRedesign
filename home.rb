@@ -34,7 +34,7 @@ Stripe.api_key = 'sk_test_51HXRUPJQBIZrH8yyQLsDsjFYctrNHRftaBIeEs4UQ6rnM5OY0jRTX
 set :static, true
 set :port, 4242
 
-YOUR_DOMAIN = 'http://0.0.0.0:4242'
+YOUR_DOMAIN = 'http://127.0.0.1:4242'
 
 post '/create-checkout-session-white' do
     content_type 'application/json'
