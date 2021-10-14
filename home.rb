@@ -34,7 +34,7 @@ Stripe.api_key = 'sk_test_51HXRUPJQBIZrH8yyQLsDsjFYctrNHRftaBIeEs4UQ6rnM5OY0jRTX
 set :static, true
 set :port, ENV['PORT']
 
-YOUR_DOMAIN = "http://capo-redesign.herokuapp.com:#{ENV['PORT']}"
+YOUR_DOMAIN = "http://capo-redesign.herokuapp.com"
 
 post '/create-checkout-session-white' do
     content_type 'application/json'
