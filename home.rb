@@ -32,9 +32,9 @@ end
 # This is your real test secret API key.
 Stripe.api_key = 'sk_test_51HXRUPJQBIZrH8yyQLsDsjFYctrNHRftaBIeEs4UQ6rnM5OY0jRTX5AaYSPlFEmAM5tI1ag3NFiHFCkqFfhwSNm800IbjU851m'
 set :static, true
-set :port, $PORT
+set :port, 4242
 
-YOUR_DOMAIN = "http://127.0.0.1:#{$PORT}"
+YOUR_DOMAIN = "http://127.0.0.1:4242"
 
 post '/create-checkout-session-white' do
     content_type 'application/json'
