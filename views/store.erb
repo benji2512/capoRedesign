@@ -40,44 +40,93 @@
     <br>
     <div class="container">
       <div class="display-4 text-center">
-        <p>Store opens at 6pm 29/10/2021</p>
-      <%# <div class="row">
-        <div class="col-md-6">
-            <img src="/images/CCJwhite.jpg" style="width:100%">
-          <div class="text-center quantity-setter">
-              <button class="increment-btn" id="subtract" disabled type="button">-</button>
-              <input type="number" id="quantity-input" min="1" value="1" name="quantity" />
-              <button class="increment-btn" id="add" type="button">+</button>
-          </div>
-          <div class="text-center d-grid gap-2 d-md-block">
-          <br>
-            <form action="/create-checkout-session-white" method="POST">
-              <button class="btn btn-primary" type="submit" id="checkout-button">Buy Now!</button>
-            </form>
-          </div>
+        <%# <div class="sr-element sr-products" data-embed="multiple_products">
+          <script type="application/json">
+            {
+              "store_id": "1091",
+              "publishable_key": "sr_live_pk_76533f4432a234a04a4a3b7a843baa629964",
+              "options": {
+                "products_to_display": "all",
+                "categories": [],
+                "product_size": "medium",
+                "image_dimension_value": "crop",
+                "image_width": "570",
+                "image_height": "700",
+                "button_style": "standard",
+                "button_position": "inline",
+                "product_default_sorting_order": "product_order",
+                "product_pagination_limit": "4",
+                "hide_out_of_stock": "0"
+              },
+              "includes": {
+                "show_search_box": "0",
+                "show_sort_by": "0",
+                "show_per_page": "0",
+                "show_category_dropdown": "0",
+                "show_currency_dropdown": "0",
+                "show_language_dropdown": "0",
+                "show_product_name": "1",
+                "show_product_price": "1",
+                "show_product_image": "1",
+                "show_product_summary": "1",
+                "show_view_product_button": "1",
+                "show_add_to_cart_button": "0",
+                "show_min_max_order_quantity": "1",
+                "show_sale": "0",
+                "show_free_shipping": "0",
+                "show_new_product": "1",
+                "show_digital_download": "0"
+              },
+              "product_popup": {
+                "show_product_name": "1",
+                "show_product_price": "1",
+                "show_product_summary": "1",
+                "show_product_description": "1",
+                "show_product_image": "1",
+                "show_select_quantity": "0",
+                "show_image_thumbnails": "1",
+                "show_product_reviews": "1",
+                "show_product_sku": "1",
+                "show_product_categories": "1",
+                "show_social_sharing_icons": "1",
+                "show_related_products": "1",
+                "thumbnail_layout": "horizontal_below",
+                "image_dimension_value": "crop",
+                "image_width": "570",
+                "image_height": "700",
+                "variation_styling": "dropdown",
+                "show_min_max_order_quantity": "1",
+                "show_sale": "0",
+                "show_free_shipping": "0",
+                "show_new_product": "1",
+                "show_product_tabs": "1"
+              },
+              "styles": {
+                "product_title": "#666666",
+                "product_price": "#666666",
+                "product_summary": "#666666",
+                "button_background": "#233642",
+                "button_color": "#ffffff",
+                "view_product_button_background": "#233642",
+                "view_product_button_color": "#ffffff",
+                "view_cart_button_background": "#233642",
+                "view_cart_button_color": "#ffffff",
+                "product_background": "#ffffff",
+                "show_product_shadow": "0",
+                "show_rounded_edges": "0",
+                "show_padding": "1"
+              }
+            }
+          </script>
         </div>
-        <div class="col-md-6">
-            <img src="/images/CCcharcoal.jpg" style="width:96%">
-          <div class="text-center quantity-setter">
-          <br>
-              <button class="increment-btn" id="subtract" disabled type="button">-</button>
-              <input type="number" id="quantity-input" min="1" value="1" name="quantity" />
-              <button class="increment-btn" id="add" type="button">+</button>
-          </div>
-          <div class="text-center d-grid gap-2 d-md-block">
-            <br>
-            <form action="/create-checkout-session-charcoal" method="POST">
-              <button class="btn btn-primary" type="submit" id="checkout-button">Buy Now!</button>
-            </form>
-          </div>
-        </div>
-      </div> %>
+        <script async src="https://cdn.shoprocket.io/loader.js"></script> %>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/c61bc95792.js" crossorigin="anonymous"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <%# <script data-embed="basket" type="application/json">{"store_id":"1091","publishable_key":"sr_live_pk_76533f4432a234a04a4a3b7a843baa629964","options":{"basket_style":"bubble","basket_position":"bottom-right"},"includes":{"show_pop_up_adding_item_to_cart":"1","show_terms_checkbox":"1","show_notes_field":"1","show_newsletter_opt_in":"1","show_image_thumbnails":"1","show_select_quantity":"1","show_overlay_when_open":"1","show_cart_count":"1","show_cart_total":"0"},"styles":{"basket_background":"#ffffff","basket_color":"#000000","basket_text_color":"#000000","basket_counter_background":"#000000","basket_counter_color":"#ffffff","cart_background":"#ffffff","cart_text_color":"#666666","cart_button_background":"#233642","cart_button_color":"#ffffff","cart_links_text_color":"#808b97","cart_border_color":"#eeeeee"}}</script><script async src="https://cdn.shoprocket.io/loader.js"></script> %>
     <script src="https://js.stripe.com/v3/"></script>
   </body>
 </html>
