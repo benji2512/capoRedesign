@@ -29,6 +29,7 @@ GEM
     builder (3.2.4)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
+    dotenv (2.7.6)
     erubi (1.10.0)
     execjs (2.8.1)
     ffi (1.15.4-x64-mingw32)
@@ -98,6 +99,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootstrap
+  dotenv
   puma
   sinatra
   stripe
@@ -106,4 +108,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.2.22
+   2.3.9

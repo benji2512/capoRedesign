@@ -1,13 +1,28 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <!-- Swiper-->
+    <link rel="stylesheet" href="/vendor/swiper/swiper-bundle.min.css">
+    <!-- AOS - AnimationOnScroll-->
+    <link rel="stylesheet" href="/vendor/aos/aos.css">
+    <!-- Custom Scrollbar-->
+    <link rel="stylesheet" href="/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+    <!-- Theme stylesheet-->
+    <link rel="stylesheet" href="style.default.css" id="theme-stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.png">
+    <!-- FontAwesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.0/css/all.css">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <title> Capo Crimini </title>
   </head>
   <body>
@@ -42,95 +57,543 @@
     <br>
     <br>
     <div class="container">
-      <div class="display-4 text-center">
-        <%# <h1 class="display-4">Store opens at 6pm(GMT) 29/10/2021</h1> %>
-        <div class="sr-element sr-products" data-embed="multiple_products">
-           <script type="application/json">
-            {
-              "store_id": "1091",
-              "publishable_key": "sr_live_pk_76533f4432a234a04a4a3b7a843baa629964",
-              "options": {
-                "products_to_display": "all",
-                "categories": [],
-                "product_size": "large",
-                "image_dimension_value": "crop",
-                "image_width": "570",
-                "image_height": "700",
-                "button_style": "standard",
-                "button_position": "inline",
-                "product_default_sorting_order": "product_order",
-                "product_pagination_limit": "4",
-                "hide_out_of_stock": "0"
-              },
-              "includes": {
-                "show_search_box": "0",
-                "show_sort_by": "0",
-                "show_per_page": "0",
-                "show_category_dropdown": "0",
-                "show_currency_dropdown": "0",
-                "show_language_dropdown": "0",
-                "show_product_name": "1",
-                "show_product_price": "1",
-                "show_product_image": "1",
-                "show_product_summary": "1",
-                "show_view_product_button": "1",
-                "show_add_to_cart_button": "1",
-                "show_min_max_order_quantity": "1",
-                "show_sale": "1",
-                "show_free_shipping": "1",
-                "show_new_product": "1",
-                "show_digital_download": "1"
-              },
-              "product_popup": {
-                "show_product_name": "1",
-                "show_product_price": "1",
-                "show_product_summary": "1",
-                "show_product_description": "1",
-                "show_product_image": "1",
-                "show_select_quantity": "1",
-                "show_image_thumbnails": "1",
-                "show_product_reviews": "1",
-                "show_product_sku": "1",
-                "show_product_categories": "1",
-                "show_social_sharing_icons": "1",
-                "show_related_products": "1",
-                "thumbnail_layout": "horizontal_below",
-                "image_dimension_value": "crop",
-                "image_width": "570",
-                "image_height": "700",
-                "variation_styling": "dropdown",
-                "show_min_max_order_quantity": "1",
-                "show_sale": "1",
-                "show_free_shipping": "1",
-                "show_new_product": "1",
-                "show_product_tabs": "1"
-              },
-              "styles": {
-                "product_title": "#666666",
-                "product_price": "#666666",
-                "product_summary": "#666666",
-                "button_background": "#233642",
-                "button_color": "#ffffff",
-                "view_product_button_background": "#233642",
-                "view_product_button_color": "#ffffff",
-                "view_cart_button_background": "#233642",
-                "view_cart_button_color": "#ffffff",
-                "product_background": "#ffffff",
-                "show_product_shadow": "0",
-                "show_rounded_edges": "0",
-                "show_padding": "1"
-              }
-            }
-          </script>
+      <%# <div class="col-25">
+      <ul>
+        <li class="nav-item ml-2"><a class="text-dark text-primary-hover" href="#" data-bs-toggle="modal" data-bs-target="#sidebarCartRight">
+          <svg class="svg-icon navbar-icon">
+            <use xlink:href="#retail-bag-1"> </use>
+          </svg>
+          <div class="navbar-icon-badge">5</div></a>
+        </li>
+      </ul> %>
+      <%# </div> %>
+
+      <!-- Sidebar Cart Modal-->
+      <div class="modal fade modal-right" id="sidebarCart" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content sidebar-cart-content">
+            <div class="modal-header mb-3 border-0">
+              <button class="btn-close btn-close-lg btn-close-rotate opacity-8" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-5 sidebar-cart-body">
+              <!-- Empty cart snippet-->
+              <!-- In case of empty cart - display this snippet + remove .d-none-->
+              <div class="d-none text-center mb-5">
+                <svg class="svg-icon w-3rem h-3rem svg-icon-light mb-4 text-muted">
+                  <use xlink:href="#retail-bag-1"> </use>
+                </svg>
+                <p>Your cart is empty </p>
+              </div>
+              <!-- Empty cart snippet end-->
+              <div class="sidebar-cart-product-wrapper custom-scrollbar">
+                <!-- cart item-->
+                <div class="navbar-cart-product"> 
+                  <div class="d-flex align-items-center"><a href="detail-1.html"><img class="img-fluid navbar-cart-product-image" src="img/product/product-square-ian-dooley-347968-unsplash.jpg" alt="..."/></a>
+                    <div class="w-100"><a class="navbar-cart-product-remove" href="#!">
+                        <svg class="svg-icon sidebar-cart-icon">
+                          <use xlink:href="#close-1"> </use>
+                        </svg></a>
+                      <div class="ps-3"> <a class="navbar-cart-product-link text-dark link-animated" href="detail-1.html">Skull Tee</a><small class="d-block text-muted">Quantity: 1 </small><strong class="d-block text-sm">$75.00     </strong></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- cart item-->
+                <div class="navbar-cart-product"> 
+                  <div class="d-flex align-items-center"><a href="detail-1.html"><img class="img-fluid navbar-cart-product-image" src="img/product/product-square-kyle-loftus-596319-unsplash.jpg" alt="..."/></a>
+                    <div class="w-100"><a class="navbar-cart-product-remove" href="#!">
+                        <svg class="svg-icon sidebar-cart-icon">
+                          <use xlink:href="#close-1"> </use>
+                        </svg></a>
+                      <div class="ps-3"> <a class="navbar-cart-product-link text-dark link-animated" href="detail-1.html">Transparent Blouse</a><small class="d-block text-muted">Quantity: 1 </small><strong class="d-block text-sm">$75.00     </strong></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- cart item-->
+                <div class="navbar-cart-product"> 
+                  <div class="d-flex align-items-center"><a href="detail-1.html"><img class="img-fluid navbar-cart-product-image" src="img/product/product-square-serrah-galos-494312-unsplash.jpg" alt="..."/></a>
+                    <div class="w-100"><a class="navbar-cart-product-remove" href="#!">
+                        <svg class="svg-icon sidebar-cart-icon">
+                          <use xlink:href="#close-1"> </use>
+                        </svg></a>
+                      <div class="ps-3"> <a class="navbar-cart-product-link text-dark link-animated" href="detail-1.html">White Tee</a><small class="d-block text-muted">Quantity: 1 </small><strong class="d-block text-sm">$75.00     </strong></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- cart item-->
+                <div class="navbar-cart-product"> 
+                  <div class="d-flex align-items-center"><a href="detail-1.html"><img class="img-fluid navbar-cart-product-image" src="img/product/product-square-ian-dooley-347968-unsplash.jpg" alt="..."/></a>
+                    <div class="w-100"><a class="navbar-cart-product-remove" href="#!">
+                        <svg class="svg-icon sidebar-cart-icon">
+                          <use xlink:href="#close-1"> </use>
+                        </svg></a>
+                      <div class="ps-3"> <a class="navbar-cart-product-link text-dark link-animated" href="detail-1.html">Skull Tee</a><small class="d-block text-muted">Quantity: 1 </small><strong class="d-block text-sm">$75.00     </strong></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- cart item-->
+                <div class="navbar-cart-product"> 
+                  <div class="d-flex align-items-center"><a href="detail-1.html"><img class="img-fluid navbar-cart-product-image" src="img/product/product-square-kyle-loftus-596319-unsplash.jpg" alt="..."/></a>
+                    <div class="w-100"><a class="navbar-cart-product-remove" href="#!">
+                        <svg class="svg-icon sidebar-cart-icon">
+                          <use xlink:href="#close-1"> </use>
+                        </svg></a>
+                      <div class="ps-3"> <a class="navbar-cart-product-link text-dark link-animated" href="detail-1.html">Transparent Blouse</a><small class="d-block text-muted">Quantity: 1 </small><strong class="d-block text-sm">$75.00     </strong></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- cart item-->
+                <div class="navbar-cart-product"> 
+                  <div class="d-flex align-items-center"><a href="detail-1.html"><img class="img-fluid navbar-cart-product-image" src="img/product/product-square-serrah-galos-494312-unsplash.jpg" alt="..."/></a>
+                    <div class="w-100"><a class="navbar-cart-product-remove" href="#!">
+                        <svg class="svg-icon sidebar-cart-icon">
+                          <use xlink:href="#close-1"> </use>
+                        </svg></a>
+                      <div class="ps-3"> <a class="navbar-cart-product-link text-dark link-animated" href="detail-1.html">White Tee</a><small class="d-block text-muted">Quantity: 1 </small><strong class="d-block text-sm">$75.00     </strong></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer sidebar-cart-footer shadow">
+              <div class="w-100">
+                <h5 class="mb-4">Subtotal: <span class="float-right">$465.32</span></h5>
+                <div class="d-grid gap-3"><a class="btn btn-outline-dark" href="cart.html">View cart</a><a class="btn btn-dark" href="checkout.html">Checkout</a></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <script async src="https://cdn.shoprocket.io/loader.js"></script>
+      </div>
+      <!-- Sidebar Modal Right-->
+      <div class="modal fade modal-right" id="sidebarRight" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header border-0">
+              <button class="btn-close btn-close-lg btn-close-rotate" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-5 pb-5">
+              <div>
+                <h5 class="mb-5" data-aos="zoom-in" data-aos-delay="50">Varkala</h5>
+                <ul class="nav flex-column mb-5">
+                  <li class="nav-item active"><a class="nav-link ps-0" href="#">Home </a></li>
+                  <li class="nav-item"><a class="nav-link ps-0" href="#">Link</a></li>
+                  <li class="nav-item"><a class="nav-link ps-0 disabled" href="#">Disabled</a></li>
+                  <li class="nav-item dropdown"><a class="nav-link ps-0 dropdown-toggle" id="navbarDropdownMenuLink" href="#" data-bs-target="#sidebarSubmenu" data-bs-toggle="collapse" aria-haspopup="true" aria-expanded="false">Dropdown link</a>
+                    <div class="collapse" id="sidebarSubmenu">
+                      <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a class="nav-link ps-0" href="#">Action</a></li>
+                        <li class="nav-item"><a class="nav-link ps-0" href="#">Another action</a></li>
+                        <li class="nav-item"><a class="nav-link ps-0" href="#">Something else here                </a></li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+                <ul class="list-inline mb-4">
+                  <li class="list-inline-item me-2"><i class="fab fa-facebook-f"> </i></li>
+                  <li class="list-inline-item me-2"><i class="fab fa-twitter"> </i></li>
+                  <li class="list-inline-item me-2">
+                    <svg class="svg-icon me-2">
+                      <use xlink:href="#calls-1"> </use>
+                    </svg>020-800-456-747
+                  </li>
+                </ul>
+                <p class="text-sm text-muted mb-0">Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <!-- product-->
+        <div class="col-xl-3 col-lg-3 col-md-4 col-6">
+          <div class="product product-type-0" data-aos="zoom-in" data-aos-delay="0">
+            <div class="product-image mb-md-3">
+              <div class="product-badge badge bg-secondary">Fresh</div><a href="detail-1.html">
+                <div class="product-swap-image"><img class="img-fluid product-swap-image-front" src="/images/black_tshirt_white_print.jpeg" alt="product"/><img class="img-fluid" src="/images/black_tshirt_white_print.jpeg" alt="product"/></div></a>
+              <div class="product-hover-overlay"><a class="text-dark text-sm" href="#!">
+                  <svg class="svg-icon text-primary-hover svg-icon-heavy d-sm-none">
+                    <use xlink:href="#retail-bag-1"> </use>
+                  </svg><span class="d-none d-sm-inline">Add to cart</span></a>
+                <div><a class="text-dark text-primary-hover me-2" href="#!">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#heart-1"> </use>
+                    </svg></a><a class="text-dark text-primary-hover text-decoration-none" href="#!" data-bs-toggle="modal" data-bs-target="#quickView">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#expand-1"> </use>
+                    </svg></a></div>
+              </div>
+            </div>
+            <div class="position-relative">
+              <h3 class="text-base mb-1"><a class="text-dark" href="detail-1.html">Black Tee</a></h3>
+              <p class="text-gray-600 text-sm"> <span>&#163;<%= tshirtPrice %></span>
+                <form action="/create-checkout-session" method="POST">
+                  <button class="text-dark" type="submit" id="button">Buy</button>
+                </form>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- /product   -->
+        <!-- product-->
+        <div class="col-xl-3 col-lg-3 col-md-4 col-6">
+          <div class="product product-type-0" data-aos="zoom-in" data-aos-delay="0">
+            <div class="product-image mb-md-3"><a href="detail-1.html">
+                <div class="product-swap-image"><img class="img-fluid product-swap-image-front" src="/images/grey_tshirt_white_print.jpeg" alt="product"/><img class="img-fluid" src="/images/grey_tshirt_white_print.jpeg" alt="product"/></div></a>
+              <div class="product-hover-overlay"><a class="text-dark text-sm" href="#!">
+                  <svg class="svg-icon text-primary-hover svg-icon-heavy d-sm-none">
+                    <use xlink:href="#retail-bag-1"> </use>
+                  </svg><span class="d-none d-sm-inline">Add to cart</span></a>
+                <div><a class="text-dark text-primary-hover me-2" href="#!">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#heart-1"> </use>
+                    </svg></a><a class="text-dark text-primary-hover text-decoration-none" href="#!" data-bs-toggle="modal" data-bs-target="#quickView">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#expand-1"> </use>
+                    </svg></a></div>
+              </div>
+            </div>
+            <div class="position-relative">
+              <h3 class="text-base mb-1"><a class="text-dark" href="detail-1.html">Grey Tee</a></h3>
+              <p class="text-gray-600 text-sm"> <span>&#163;<%= tshirtPrice %></span>
+              <form action="/create-checkout-session" method="POST">
+                <button class="text-dark" type="submit" id="button">Buy</button>
+              </form>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- /product   -->
+        <!-- product-->
+        <div class="col-xl-3 col-lg-3 col-md-4 col-6">
+          <div class="product product-type-0" data-aos="zoom-in" data-aos-delay="0">
+            <div class="product-image mb-md-3">
+              <div class="product-badge badge bg-primary">Sale</div><a href="detail-1.html">
+                <div class="product-swap-image"><img class="img-fluid product-swap-image-front" src="/images/navy_tshirt_white_print.jpeg" alt="product"/><img class="img-fluid" src="/images/navy_tshirt_white_print.jpeg" alt="product"/></div></a>
+              <div class="product-hover-overlay"><a class="text-dark text-sm" href="#!">
+                  <svg class="svg-icon text-primary-hover svg-icon-heavy d-sm-none">
+                    <use xlink:href="#retail-bag-1"> </use>
+                  </svg><span class="d-none d-sm-inline">Add to cart</span></a>
+                <div><a class="text-dark text-primary-hover me-2" href="#!">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#heart-1"> </use>
+                    </svg></a><a class="text-dark text-primary-hover text-decoration-none" href="#!" data-bs-toggle="modal" data-bs-target="#quickView">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#expand-1"> </use>
+                    </svg></a></div>
+              </div>
+            </div>
+            <div class="position-relative">
+              <h3 class="text-base mb-1"><a class="text-dark" href="detail-1.html">College jacket</a></h3>
+              <h3 class="text-base mb-1"><a class="text-dark" href="detail-1.html">Navy Tee</a></h3>
+              <p class="text-gray-600 text-sm"> <span>&#163;<%= tshirtPrice %></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- /product   -->
+      </div>
+      <div class="row justify-content-center">
+        <!-- product-->
+        <div class="col-xl-3 col-lg-3 col-md-4 col-6">
+          <div class="product product-type-0" data-aos="zoom-in" data-aos-delay="0">
+            <div class="product-image mb-md-3"><a href="detail-1.html">
+                <div class="product-swap-image"><img class="img-fluid product-swap-image-front" src="/images/white_tshirt_black_print.jpeg" alt="product"/><img class="img-fluid" src="/images/white_tshirt_black_print.jpeg" alt="product"/></div></a>
+              <div class="product-hover-overlay"><a class="text-dark text-sm" href="#!">
+                  <svg class="svg-icon text-primary-hover svg-icon-heavy d-sm-none">
+                    <use xlink:href="#retail-bag-1"> </use>
+                  </svg><span class="d-none d-sm-inline">Add to cart</span></a>
+                <div><a class="text-dark text-primary-hover me-2" href="#!">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#heart-1"> </use>
+                    </svg></a><a class="text-dark text-primary-hover text-decoration-none" href="#!" data-bs-toggle="modal" data-bs-target="#quickView">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#expand-1"> </use>
+                    </svg></a></div>
+              </div>
+            </div>
+            <div class="position-relative">
+              <h3 class="text-base mb-1"><a class="text-dark" href="detail-1.html">Navy Tee</a></h3>
+              <p class="text-gray-600 text-sm"> <span>&#163;<%= tshirtPrice %></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- /product   -->
+        <!-- product-->
+        <div class="col-xl-3 col-lg-3 col-md-4 col-6">
+          <div class="product product-type-0" data-aos="zoom-in" data-aos-delay="0">
+            <div class="product-image mb-md-3"><a href="detail-1.html">
+                <div class="product-swap-image"><img class="img-fluid product-swap-image-front" src="/images/white_tshirt_rainbow_print.jpeg" alt="product"/><img class="img-fluid" src="/images/white_tshirt_rainbow_print.jpeg" alt="product"/></div></a>
+              <div class="product-hover-overlay"><a class="text-dark text-sm" href="#!">
+                  <svg class="svg-icon text-primary-hover svg-icon-heavy d-sm-none">
+                    <use xlink:href="#retail-bag-1"> </use>
+                  </svg><span class="d-none d-sm-inline">Add to cart</span></a>
+                <div><a class="text-dark text-primary-hover me-2" href="#!">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#heart-1"> </use>
+                    </svg></a><a class="text-dark text-primary-hover text-decoration-none" href="#!" data-bs-toggle="modal" data-bs-target="#quickView">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#expand-1"> </use>
+                    </svg></a></div>
+              </div>
+            </div>
+            <div class="position-relative">
+              <h3 class="text-base mb-1"><a class="text-dark" href="detail-1.html">White w/Rainbow Tee</a></h3>
+              <p class="text-gray-600 text-sm"> <span>&#163;<%= tshirtPrice %></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- /product   -->
+        <!-- product-->
+        <div class="col-xl-3 col-lg-3 col-md-4 col-6">
+          <div class="product product-type-0" data-aos="zoom-in" data-aos-delay="0">
+            <div class="product-image mb-md-3">
+              <div class="product-badge badge bg-dark">Sold out</div><a href="detail-1.html">
+                <div class="product-swap-image"><img class="img-fluid product-swap-image-front" src="/images/capo_front_black.jpg" alt="product"/><img class="img-fluid" src="/images/capo_back_black.jpg" alt="product"/></div></a>
+              <div class="product-hover-overlay"><a class="text-dark text-sm" href="#!">
+                  <svg class="svg-icon text-primary-hover svg-icon-heavy d-sm-none">
+                    <use xlink:href="#retail-bag-1"> </use>
+                  </svg><span class="d-none d-sm-inline">Add to cart</span></a>
+                <div><a class="text-dark text-primary-hover me-2" href="#!">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#heart-1"> </use>
+                    </svg></a><a class="text-dark text-primary-hover text-decoration-none" href="#!" data-bs-toggle="modal" data-bs-target="#quickView">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#expand-1"> </use>
+                    </svg></a></div>
+              </div>
+            </div>
+            <div class="position-relative">
+              <h3 class="text-base mb-1"><a class="text-dark" href="detail-1.html">Black Hoodie</a></h3>
+              <p class="text-gray-600 text-sm"> <span>&#163;<%= hoodiePrice %></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- /product   -->
+      </div>
+      <div class="row justify-content-center">
+        <!-- product-->
+        <div class="col-xl-3 col-lg-3 col-md-4 col-6">
+          <div class="product product-type-0" data-aos="zoom-in" data-aos-delay="0">
+            <div class="product-image mb-md-3">
+              <div class="product-badge badge bg-secondary">Fresh</div><a href="detail-1.html">
+                <div class="product-swap-image"><img class="img-fluid product-swap-image-front" src="/images/black_tshirt_white_print.jpeg" alt="product"/><img class="img-fluid" src="/images/black_tshirt_white_print.jpeg" alt="product"/></div></a>
+              <div class="product-hover-overlay"><a class="text-dark text-sm" href="#!">
+                  <svg class="svg-icon text-primary-hover svg-icon-heavy d-sm-none">
+                    <use xlink:href="#retail-bag-1"> </use>
+                  </svg><span class="d-none d-sm-inline">Add to cart</span></a>
+                <div><a class="text-dark text-primary-hover me-2" href="#!">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#heart-1"> </use>
+                    </svg></a><a class="text-dark text-primary-hover text-decoration-none" href="#!" data-bs-toggle="modal" data-bs-target="#quickView">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#expand-1"> </use>
+                    </svg></a></div>
+              </div>
+            </div>
+            <div class="position-relative">
+              <h3 class="text-base mb-1"><a class="text-dark" href="detail-1.html">White Tee</a></h3>
+              <p class="text-gray-600 text-sm">
+                <s class="me-2 text-gray-500">$40.00</s><span>$20.00</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- /product   -->
+        <!-- product-->
+        <div class="col-xl-3 col-lg-3 col-md-4 col-6">
+          <div class="product product-type-0" data-aos="zoom-in" data-aos-delay="0">
+            <div class="product-image mb-md-3"><a href="detail-1.html">
+                <div class="product-swap-image"><img class="img-fluid product-swap-image-front" src="/images/grey_tshirt_white_print.jpeg" alt="product"/><img class="img-fluid" src="/images/grey_tshirt_white_print.jpeg" alt="product"/></div></a>
+              <div class="product-hover-overlay"><a class="text-dark text-sm" href="#!">
+                  <svg class="svg-icon text-primary-hover svg-icon-heavy d-sm-none">
+                    <use xlink:href="#retail-bag-1"> </use>
+                  </svg><span class="d-none d-sm-inline">Add to cart</span></a>
+                <div><a class="text-dark text-primary-hover me-2" href="#!">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#heart-1"> </use>
+                    </svg></a><a class="text-dark text-primary-hover text-decoration-none" href="#!" data-bs-toggle="modal" data-bs-target="#quickView">
+                    <svg class="svg-icon svg-icon-heavy">
+                      <use xlink:href="#expand-1"> </use>
+                    </svg></a></div>
+              </div>
+            </div>
+            <div class="position-relative">
+              <h3 class="text-base mb-1"><a class="text-dark" href="detail-1.html">Black blouse</a></h3>
+              <p class="text-gray-600 text-sm"> <span>$40.00                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- /product   -->
+      </div>
+      <!-- Quickview Modal    -->
+      <div class="modal fade quickview" id="quickView" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <button class="btn-close btn-close-absolute btn-close-lg btn-close-rotate" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body quickview-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="detail-carousel">
+                    <div class="product-badge badge bg-primary">Fresh</div>
+                    <div class="product-badge badge bg-dark">Sale</div>
+                    <div class="swiper swiper-container quickview-slider" id="quickViewSlider">
+                      <!-- Additional required wrapper-->
+                      <div class="swiper-wrapper">
+                        <!-- Slides-->
+                        <div class="swiper-slide"><img class="img-fluid" src="img/product/detail-1-gray.jpg" alt="Modern Jacket 1"></div>
+                        <div class="swiper-slide"><img class="img-fluid" src="img/product/detail-2-gray.jpg" alt="Modern Jacket 2"></div>
+                        <div class="swiper-slide"><img class="img-fluid" src="img/product/detail-3-gray.jpg" alt="Modern Jacket 3"></div>
+                        <div class="swiper-slide"><img class="img-fluid" src="img/product/detail-4-gray.jpg" alt="Modern Jacket 4"></div>
+                        <div class="swiper-slide"><img class="img-fluid" src="img/product/detail-5-gray.jpg" alt="Modern Jacket 5"></div>
+                      </div>
+                    </div>
+                    <div class="swiper-thumbs" data-swiper="#quickViewSlider">
+                      <button class="swiper-thumb-item detail-thumb-item mb-3 active"><img class="img-fluid" src="img/product/detail-1-gray.jpg" alt="Modern Jacket 0"></button>
+                      <button class="swiper-thumb-item detail-thumb-item mb-3"><img class="img-fluid" src="img/product/detail-2-gray.jpg" alt="Modern Jacket 1"></button>
+                      <button class="swiper-thumb-item detail-thumb-item mb-3"><img class="img-fluid" src="img/product/detail-3-gray.jpg" alt="Modern Jacket 2"></button>
+                      <button class="swiper-thumb-item detail-thumb-item mb-3"><img class="img-fluid" src="img/product/detail-4-gray.jpg" alt="Modern Jacket 3"></button>
+                      <button class="swiper-thumb-item detail-thumb-item mb-3"><img class="img-fluid" src="img/product/detail-5-gray.jpg" alt="Modern Jacket 4"></button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 p-lg-5">
+                  <h2 class="mb-4 mt-4 mt-lg-1">Push-up Jeans</h2>
+                  <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between mb-4">
+                    <ul class="list-inline mb-2 mb-sm-0">
+                      <li class="list-inline-item h4 fw-light mb-0">$65.00</li>
+                      <li class="list-inline-item text-muted fw-light"> 
+                        <del>$90.00</del>
+                      </li>
+                    </ul>
+                    <div class="d-flex align-items-center text-sm">
+                      <ul class="list-inline me-2 mb-0">
+                        <li class="list-inline-item me-0"><i class="fa fa-star text-primary"></i></li>
+                        <li class="list-inline-item me-0"><i class="fa fa-star text-primary"></i></li>
+                        <li class="list-inline-item me-0"><i class="fa fa-star text-primary"></i></li>
+                        <li class="list-inline-item me-0"><i class="fa fa-star text-primary"></i></li>
+                        <li class="list-inline-item me-0"><i class="fa fa-star text-gray-300"></i></li>
+                      </ul><span class="text-muted text-uppercase">25 reviews</span>
+                    </div>
+                  </div>
+                  <p class="mb-4 text-muted">Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame.</p>
+                  <form id="buyForm_modal" action="#">
+                    <div class="row">
+                      <div class="col-sm-6 col-lg-12 detail-option mb-4">
+                        <h6 class="detail-option-heading">Size <span>(required)</span></h6>
+                        <select class="selectpicker" name="size" data-style="btn-selectpicker">
+                          <option value="value_0">Small</option>
+                          <option value="value_1">Medium</option>
+                          <option value="value_2">Large</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-6 col-lg-12 detail-option mb-5">
+                        <h6 class="detail-option-heading">Type <span>(required)</span></h6>
+                        <label class="btn btn-sm btn-outline-primary detail-option-btn-label" for="material_0_modal"> Hoodie
+                          <input class="input-invisible" type="radio" name="material" value="value_0" id="material_0_modal" required>
+                        </label>
+                        <label class="btn btn-sm btn-outline-primary detail-option-btn-label" for="material_1_modal"> College
+                          <input class="input-invisible" type="radio" name="material" value="value_1" id="material_1_modal" required>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="input-group w-100 mb-4">
+                      <input class="form-control form-control-lg detail-quantity" name="items" type="number" value="1">
+                      <div class="flex-grow-1">
+                        <div class="d-grid h-100">
+                          <button class="btn btn-dark" type="submit"> <i class="fa fa-shopping-cart me-2"></i>Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mb-4">
+                      <div class="col-6"><a href="#"> <i class="far fa-heart me-2"></i>Add to wishlist </a></div>
+                      <div class="col-6 text-end">
+                        <ul class="list-inline mb-0">
+                          <li class="list-inline-item me-2"><a class="text-dark text-primary-hover" href="#"><i class="fab fa-facebook-f"> </i></a></li>
+                          <li class="list-inline-item"><a class="text-dark text-primary-hover" href="#"><i class="fab fa-twitter"> </i></a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <ul class="list-unstyled">
+                      <li><strong>Category:</strong> <a class="text-muted" href="#">Jeans</a></li>
+                      <li><strong>Tags:</strong> <a class="text-muted" href="#">Leisure</a>, <a class="text-muted" href="#">Elegant</a></li>
+                    </ul>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <%# <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> %>
     <script src="https://kit.fontawesome.com/c61bc95792.js" crossorigin="anonymous"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
-    <script data-embed="basket" type="application/json">{"store_id":"1091","publishable_key":"sr_live_pk_76533f4432a234a04a4a3b7a843baa629964","options":{"basket_style":"bubble","basket_position":"bottom-right"},"includes":{"show_pop_up_adding_item_to_cart":"1","show_terms_checkbox":"1","show_notes_field":"1","show_newsletter_opt_in":"1","show_image_thumbnails":"1","show_select_quantity":"1","show_overlay_when_open":"1","show_cart_count":"1","show_cart_total":"0"},"styles":{"basket_background":"#ffffff","basket_color":"#000000","basket_text_color":"#000000","basket_counter_background":"#000000","basket_counter_color":"#ffffff","cart_background":"#ffffff","cart_text_color":"#666666","cart_button_background":"#233642","cart_button_color":"#ffffff","cart_links_text_color":"#808b97","cart_border_color":"#eeeeee"}}</script><script async src="https://cdn.shoprocket.io/loader.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
+        <!-- /Footer end-->
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite -
+      //   see more here
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }
+      // this is set to Bootstrapious website as you cannot 
+      // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+      // while using file:// protocol
+      // pls don't forget to change to your domain :)
+      injectSvgSprite('https://demo.bootstrapious.com/varkala/1-1/icons/orion-svg-sprite.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/varkala/1-1/icons/varkala-clothes.svg'); 
+      injectSvgSprite('https://demo.bootstrapious.com/varkala/1-1/img/shape/blob-sprite.svg'); 
+
+    </script>
+    <!-- jQuery-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Bundle -->
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Swiper Carousel                       -->
+    <script src="/vendor/swiper/swiper-bundle.min.js"></script>
+    <!-- Bootstrap Select-->
+    <script src="/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <!-- AOS - AnimationOnScroll-->
+    <script src="/vendor/aos/aos.js"></script>
+    <!-- Custom Scrollbar-->
+    <script src="/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/js/custom-scrollbar-init.js"></script>
+    <!-- Object Fit Images - Fallback for browsers that don't support object-fit-->
+    <script src="/vendor/object-fit-images/ofi.min.js"></script>
+    <!-- JavaScript Countdown-->
+    <script src="/js/countdown.js"></script>
+    <script>
+      var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
+      var countdown = new Countdown('countdown', deadline);
+    </script>
+    <!-- Some theme config-->
+    <script>
+      var options = {
+          navbarExpandPx: 992
+      }
+    </script>
+    <!-- Main Theme files-->
+    <script src="/js/sliders-init.js"></script>
+    <script src="/js/theme.js"></script>
+
   </body>
 </html>
