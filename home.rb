@@ -4,22 +4,22 @@ require 'dotenv/load'
 Dotenv.load
 
 Stripe.api_key = 'sk_test_51HPnx0JZLfRwV14ivP3ggMyhM7YV739scvSZhQyxQCSd6DAbsg091yq5woBhs8OIqr3tZcDFGH9b2DP7ZYrL46Pf00V8hCcYe0'
-Stripe::Price.list(active: true)
-tshirt_price = Stripe::Price.retrieve(ENV['TSHIRT_PRICE'])
-hoodie_price = Stripe::Price.retrieve(ENV['HOODIE_PRICE'])
-puts tshirt_price
-puts hoodie_price
+# Stripe::Price.list(active: true)
+# tshirt_price = Stripe::Price.retrieve(ENV['TSHIRT_PRICE'])
+# hoodie_price = Stripe::Price.retrieve(ENV['HOODIE_PRICE'])
+# puts tshirt_price
+# puts hoodie_price
 
-tee_price = "%0.2f" % (tshirt_price["unit_amount_decimal"].to_i.to_f/100)
-hood_price = "%0.2f" % (hoodie_price["unit_amount_decimal"].to_i.to_f/100)
-currency = tshirt_price["currency"]
+# tee_price = "%0.2f" % (tshirt_price["unit_amount_decimal"].to_i.to_f/100)
+# hood_price = "%0.2f" % (hoodie_price["unit_amount_decimal"].to_i.to_f/100)
+# currency = tshirt_price["currency"]
 
 set :static, true
 
 set :public_folder, File.join(File.dirname(__FILE__), ENV['STATIC_DIR'])
-set :port, 4242
+set :port, 4243
 
-YOUR_DOMAIN = 'http://localhost:4242'
+YOUR_DOMAIN = 'http://localhost:4243'
 
 # get '/config' do
 #   content_type 'application/json'
@@ -42,21 +42,21 @@ YOUR_DOMAIN = 'http://localhost:4242'
 #   session.to_json
 # end
 
-post '/create-checkout-session' do
-  content_type 'application/json'
+# post '/create-checkout-session' do
+#   content_type 'application/json'
 
-  session = Stripe::Checkout::Session.create({
-    line_items: [{
-      # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
-      price: ENV['TSHIRT_PRICE'],
-      quantity: 1,
-    }],
-    mode: 'payment',
-    success_url: YOUR_DOMAIN + '/success.html',
-    cancel_url: YOUR_DOMAIN + '/cancel.html',
-  })
-  redirect session.url, 303
-end
+#   session = Stripe::Checkout::Session.create({
+#     line_items: [{
+#       # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
+#       price: ENV['TSHIRT_PRICE'],
+#       quantity: 1,
+#     }],
+#     mode: 'payment',
+#     success_url: YOUR_DOMAIN + '/success.html',
+#     cancel_url: YOUR_DOMAIN + '/cancel.html',
+#   })
+#   redirect session.url, 303
+# end
 
 # post '/webhook' do
 #   # You can use webhooks to receive information about asynchronous payment events.
@@ -104,7 +104,8 @@ get "/" do
 end
 
 get "/store" do
-  erb :store, :locals => {:tshirtPrice => tee_price, :hoodiePrice => hood_price}
+  # erb :store, :locals => {:tshirtPrice => tee_price, :hoodiePrice => hood_price}
+  erb :storeshoprocket
 end
 
 get "/gallery" do
