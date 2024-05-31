@@ -1,4 +1,4 @@
 require "./home"
-require 'sinatra'
+# require 'sinatra'
 
-Sinatra::Application.run(Port: ENV['PORT'])
+run Sinatra::Application
